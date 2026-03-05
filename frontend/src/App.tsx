@@ -71,6 +71,15 @@ function App() {
     setDraft('')
   }
 
+  // Get unique types from items for the filter dropdown
+  const uniqueTypes = Array.from(new Set(items.map((item) => item.type))).sort()
+
+  // Filter items by selected type
+  const filteredItems =
+    selectedType === 'All'
+      ? items
+      : items.filter((item) => item.type === selectedType)
+
   if (!token) {
     return (
       <form className="token-form" onSubmit={handleConnect}>
@@ -117,9 +126,19 @@ function App() {
                 <td>{item.title}</td>
                 <td>{item.created_at}</td>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredItems.map((item) => (
+                <tr key={item.id}>
+                  <td>{item.id}</td>
+                  <td>{item.type}</td>
+                  <td>{item.title}</td>
+                  <td>{item.created_at}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
       )}
     </div>
   )
